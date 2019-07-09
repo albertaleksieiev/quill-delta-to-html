@@ -1,5 +1,5 @@
 {
-  "name": "quill-delta-to-html",
+  "name": "spark-quill-delta-to-html",
   "version": "0.10.11",
   "description": "Converts Quill's delta ops to HTML",
   "main": "./dist/commonjs/main.js",
