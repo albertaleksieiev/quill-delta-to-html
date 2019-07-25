@@ -9,6 +9,7 @@ var OpAttributeSanitizer = (function () {
     }
     OpAttributeSanitizer.sanitize = function (dirtyAttrs, sanitizeOptions) {
         var cleanAttrs = {};
+        var disableSanitize = sanitizeOptions.disableAttributeSanitize || false;
         if (!dirtyAttrs || typeof dirtyAttrs !== 'object') {
             return cleanAttrs;
         }
@@ -35,22 +36,22 @@ var OpAttributeSanitizer = (function () {
                 cleanAttrs[prop] = val;
             }
         });
-        if (font && OpAttributeSanitizer.IsValidFontName(font + '')) {
+        if (font && (disableSanitize || OpAttributeSanitizer.IsValidFontName(font + ''))) {
             cleanAttrs.font = font;
         }
-        if (size && OpAttributeSanitizer.IsValidSize(size + '')) {
+        if (size && (disableSanitize || OpAttributeSanitizer.IsValidSize(size + ''))) {
             cleanAttrs.size = size;
         }
-        if (width && OpAttributeSanitizer.IsValidWidth(width + '')) {
+        if (width && (disableSanitize || OpAttributeSanitizer.IsValidWidth(width + ''))) {
             cleanAttrs.width = width;
         }
         if (link) {
             cleanAttrs.link = OpAttributeSanitizer.sanitizeLinkUsingOptions(link + '', sanitizeOptions);
         }
-        if (target && OpAttributeSanitizer.isValidTarget(target)) {
+        if (target && (disableSanitize || OpAttributeSanitizer.isValidTarget(target))) {
             cleanAttrs.target = target;
         }
-        if (rel && OpAttributeSanitizer.IsValidRel(rel)) {
+        if (rel && (disableSanitize || OpAttributeSanitizer.IsValidRel(rel))) {
             cleanAttrs.rel = rel;
         }
         if (script === value_types_1.ScriptType.Sub || value_types_1.ScriptType.Super === script) {
