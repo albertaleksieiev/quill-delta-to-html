@@ -115,7 +115,7 @@ class OpAttributeSanitizer {
          cleanAttrs.script = script;
       }
 
-      if (list === ListType.Bullet || list === ListType.Ordered || list === ListType.Checked || list === ListType.Unchecked) {
+      if (disableSanitize || list === ListType.Bullet || list === ListType.Ordered || list === ListType.Checked || list === ListType.Unchecked) {
          cleanAttrs.list = list;
       }
 
@@ -123,15 +123,18 @@ class OpAttributeSanitizer {
          cleanAttrs.header = Math.min(Number(header), 6);
       }
 
-      if ([AlignType.Center, AlignType.Right, AlignType.Justify, AlignType.Left].find(a => a === align)) {
+      if (disableSanitize || [AlignType.Center, AlignType.Right, AlignType.Justify, AlignType.Left].find(a => a === align)) {
          cleanAttrs.align = align;
       }
 
-      if (direction === DirectionType.Rtl) {
+      if (disableSanitize || direction === DirectionType.Rtl) {
          cleanAttrs.direction = direction;
       }
 
-      if (indent && Number(indent)) {
+      if (indent && disableSanitize) {
+          cleanAttrs.indent = indent;
+      }
+      else if (indent && Number(indent)) {
          cleanAttrs.indent = Math.min(Number(indent), 30);
       }
 
@@ -144,7 +147,7 @@ class OpAttributeSanitizer {
       }
       return Object.keys(dirtyAttrs).reduce((cleaned, k) => {
          // this is a custom attr, put it back
-         if (sanitizedAttrs.indexOf(k) === -1) {
+         if (disableSanitize || sanitizedAttrs.indexOf(k) === -1) {
             cleaned[k] = (<any>dirtyAttrs)[k];
          };
          return cleaned;
