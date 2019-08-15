@@ -121,6 +121,7 @@ var OpToHtmlConverter = (function () {
         if (this.options.inlineStyles) {
             propsArr = propsArr.concat([
                 ['indent'],
+                ['blockquote'],
                 ['align', 'text-align'],
                 ['direction'],
                 ['font', 'font-family'],
