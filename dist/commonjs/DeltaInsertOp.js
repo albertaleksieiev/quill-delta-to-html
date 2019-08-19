@@ -54,10 +54,10 @@ var DeltaInsertOp = (function () {
             this.isUncheckedList());
     };
     DeltaInsertOp.prototype.isOrderedList = function () {
-        return this.attributes.list === value_types_1.ListType.Ordered;
+        return this.attributes.list != null && this.attributes.list.includes(value_types_1.ListType.Ordered);
     };
     DeltaInsertOp.prototype.isBulletList = function () {
-        return this.attributes.list === value_types_1.ListType.Bullet;
+        return this.attributes.list != null && this.attributes.list.includes(value_types_1.ListType.Bullet);
     };
     DeltaInsertOp.prototype.isCheckedList = function () {
         return this.attributes.list === value_types_1.ListType.Checked;
