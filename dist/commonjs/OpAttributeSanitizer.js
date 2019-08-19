@@ -9,7 +9,6 @@ var OpAttributeSanitizer = (function () {
     }
     OpAttributeSanitizer.sanitize = function (dirtyAttrs, sanitizeOptions) {
         var cleanAttrs = {};
-        var disableSanitize = sanitizeOptions.disableAttributeSanitize || false;
         if (!dirtyAttrs || typeof dirtyAttrs !== 'object') {
             return cleanAttrs;
         }
@@ -19,9 +18,6 @@ var OpAttributeSanitizer = (function () {
         ];
         var colorAttrs = ['background', 'color'];
         var font = dirtyAttrs.font, size = dirtyAttrs.size, link = dirtyAttrs.link, script = dirtyAttrs.script, list = dirtyAttrs.list, header = dirtyAttrs.header, align = dirtyAttrs.align, direction = dirtyAttrs.direction, indent = dirtyAttrs.indent, mentions = dirtyAttrs.mentions, mention = dirtyAttrs.mention, width = dirtyAttrs.width, target = dirtyAttrs.target, rel = dirtyAttrs.rel;
-        var sanitizedAttrs = booleanAttrs.concat(colorAttrs, ['font', 'size', 'link', 'script', 'list', 'header', 'align',
-            'direction', 'indent', 'mentions', 'mention', 'width',
-            'target', 'rel']);
         booleanAttrs.forEach(function (prop) {
             var v = dirtyAttrs[prop];
             if (v) {
@@ -36,44 +32,23 @@ var OpAttributeSanitizer = (function () {
                 cleanAttrs[prop] = val;
             }
         });
-        if (font && (disableSanitize || OpAttributeSanitizer.IsValidFontName(font + ''))) {
-            cleanAttrs.font = font;
-        }
-        if (size && (disableSanitize || OpAttributeSanitizer.IsValidSize(size + ''))) {
-            cleanAttrs.size = size;
-        }
-        if (width && (disableSanitize || OpAttributeSanitizer.IsValidWidth(width + ''))) {
-            cleanAttrs.width = width;
-        }
+        cleanAttrs.font = font;
+        cleanAttrs.size = size;
+        cleanAttrs.width = width;
+        cleanAttrs.target = target;
+        cleanAttrs.rel = rel;
+        cleanAttrs.list = list;
+        cleanAttrs.align = align;
+        cleanAttrs.direction = direction;
+        cleanAttrs.indent = indent;
         if (link) {
             cleanAttrs.link = OpAttributeSanitizer.sanitizeLinkUsingOptions(link + '', sanitizeOptions);
-        }
-        if (target && (disableSanitize || OpAttributeSanitizer.isValidTarget(target))) {
-            cleanAttrs.target = target;
-        }
-        if (rel && (disableSanitize || OpAttributeSanitizer.IsValidRel(rel))) {
-            cleanAttrs.rel = rel;
         }
         if (script === value_types_1.ScriptType.Sub || value_types_1.ScriptType.Super === script) {
             cleanAttrs.script = script;
         }
-        if (disableSanitize || list === value_types_1.ListType.Bullet || list === value_types_1.ListType.Ordered || list === value_types_1.ListType.Checked || list === value_types_1.ListType.Unchecked) {
-            cleanAttrs.list = list;
-        }
         if (Number(header)) {
             cleanAttrs.header = Math.min(Number(header), 6);
-        }
-        if (disableSanitize || [value_types_1.AlignType.Center, value_types_1.AlignType.Right, value_types_1.AlignType.Justify, value_types_1.AlignType.Left].find(function (a) { return a === align; })) {
-            cleanAttrs.align = align;
-        }
-        if (disableSanitize || direction === value_types_1.DirectionType.Rtl) {
-            cleanAttrs.direction = direction;
-        }
-        if (indent && disableSanitize) {
-            cleanAttrs.indent = indent;
-        }
-        else if (indent && Number(indent)) {
-            cleanAttrs.indent = Math.min(Number(indent), 30);
         }
         if (mentions && mention) {
             var sanitizedMention = MentionSanitizer_1.MentionSanitizer.sanitize(mention, sanitizeOptions);
@@ -83,10 +58,7 @@ var OpAttributeSanitizer = (function () {
             }
         }
         return Object.keys(dirtyAttrs).reduce(function (cleaned, k) {
-            if (disableSanitize || sanitizedAttrs.indexOf(k) === -1) {
-                cleaned[k] = dirtyAttrs[k];
-            }
-            ;
+            cleaned[k] = dirtyAttrs[k];
             return cleaned;
         }, cleanAttrs);
     };
