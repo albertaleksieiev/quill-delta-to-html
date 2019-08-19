@@ -115,7 +115,7 @@ class OpAttributeSanitizer {
          cleanAttrs.script = script;
       }
 
-      if (list === ListType.Bullet || list === ListType.Ordered || list === ListType.Checked || list === ListType.Unchecked) {
+      if (list && OpAttributeSanitizer.IsValidList(list)) {
          cleanAttrs.list = list;
       }
 
@@ -192,6 +192,9 @@ class OpAttributeSanitizer {
 
    static IsValidRel(relStr: string) {
       return !!relStr.match(/^[a-zA-Z\s\-]{1,250}$/i);
+   }
+   static IsValidList(list: string) {
+      return !!list.match(/^bullet|(ordered(:[aAiI1])?)$/);
    }
 }
 

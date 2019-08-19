@@ -18,6 +18,7 @@ declare class QuillDeltaToHtmlConverter {
     private callbacks;
     constructor(deltaOps: any[], options?: IQuillDeltaToHtmlConverterOptions);
     _getListTag(op: DeltaInsertOp): string;
+    _getListSubtype(op: DeltaInsertOp): string | null;
     getGroupedOps(): TDataGroup[];
     convert(): string;
     _renderWithCallbacks(groupType: GroupType, group: TDataGroup, myRenderFn: () => string): string;

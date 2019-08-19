@@ -55,10 +55,10 @@ var DeltaInsertOp = (function () {
             this.isUncheckedList());
     };
     DeltaInsertOp.prototype.isOrderedList = function () {
-        return this.attributes.list === value_types_1.ListType.Ordered;
+        return this.attributes.list != null && this.attributes.list.includes(value_types_1.ListType.Ordered);
     };
     DeltaInsertOp.prototype.isBulletList = function () {
-        return this.attributes.list === value_types_1.ListType.Bullet;
+        return this.attributes.list != null && this.attributes.list.includes(value_types_1.ListType.Bullet);
     };
     DeltaInsertOp.prototype.isCheckedList = function () {
         return this.attributes.list === value_types_1.ListType.Checked;
@@ -273,7 +273,7 @@ var OpAttributeSanitizer = (function () {
         if (script === value_types_1.ScriptType.Sub || value_types_1.ScriptType.Super === script) {
             cleanAttrs.script = script;
         }
-        if (list === value_types_1.ListType.Bullet || list === value_types_1.ListType.Ordered || list === value_types_1.ListType.Checked || list === value_types_1.ListType.Unchecked) {
+        if (list && OpAttributeSanitizer.IsValidList(list)) {
             cleanAttrs.list = list;
         }
         if (Number(header)) {
@@ -337,6 +337,9 @@ var OpAttributeSanitizer = (function () {
     };
     OpAttributeSanitizer.IsValidRel = function (relStr) {
         return !!relStr.match(/^[a-zA-Z\s\-]{1,250}$/i);
+    };
+    OpAttributeSanitizer.IsValidList = function (list) {
+        return !!list.match(/^bullet|(ordered(:[aAiI1])?)$/);
     };
     return OpAttributeSanitizer;
 }());
@@ -651,6 +654,20 @@ var QuillDeltaToHtmlConverter = (function () {
                     : op.isUncheckedList() ? this.options.bulletListTag + ''
                         : '';
     };
+    QuillDeltaToHtmlConverter.prototype._getListSubtype = function (op) {
+        if (op.isOrderedList() == false) {
+            return null;
+        }
+        if (op.attributes == null) {
+            return null;
+        }
+        var listAttributeValue = op.attributes["list"];
+        if (listAttributeValue == null) {
+            return null;
+        }
+        var listTypes = listAttributeValue.split(":");
+        return listTypes.length == 2 ? listTypes[1] : null;
+    };
     QuillDeltaToHtmlConverter.prototype.getGroupedOps = function () {
         var deltaOps = InsertOpsConverter_1.InsertOpsConverter.convert(this.rawDeltaOps, this.options);
         var pairedOps = Grouper_1.Grouper.pairOpsWithTheirBlock(deltaOps);
@@ -706,9 +723,12 @@ var QuillDeltaToHtmlConverter = (function () {
     QuillDeltaToHtmlConverter.prototype._renderList = function (list) {
         var _this = this;
         var firstItem = list.items[0];
-        return funcs_html_1.makeStartTag(this._getListTag(firstItem.item.op))
+        var tag = this._getListTag(firstItem.item.op);
+        var type = this._getListSubtype(firstItem.item.op);
+        var attributes = type != undefined ? [{ key: 'type', value: type }] : [];
+        return funcs_html_1.makeStartTag(tag, attributes)
             + list.items.map(function (li) { return _this._renderListItem(li); }).join('')
-            + funcs_html_1.makeEndTag(this._getListTag(firstItem.item.op));
+            + funcs_html_1.makeEndTag(tag);
     };
     QuillDeltaToHtmlConverter.prototype._renderListItem = function (li) {
         li.item.op.attributes.indent = 0;
