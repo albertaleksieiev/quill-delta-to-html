@@ -43,5 +43,6 @@ declare class OpAttributeSanitizer {
     static IsValidWidth(width: string): boolean;
     static isValidTarget(target: string): boolean;
     static IsValidRel(relStr: string): boolean;
+    static IsValidList(list: string): boolean;
 }
 export { OpAttributeSanitizer, IOpAttributes, IOpAttributeSanitizerOptions };

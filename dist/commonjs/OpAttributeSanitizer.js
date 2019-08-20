@@ -37,10 +37,12 @@ var OpAttributeSanitizer = (function () {
         cleanAttrs.width = width;
         cleanAttrs.target = target;
         cleanAttrs.rel = rel;
-        cleanAttrs.list = list;
         cleanAttrs.align = align;
         cleanAttrs.direction = direction;
         cleanAttrs.indent = indent;
+        if (list && OpAttributeSanitizer.IsValidList(list)) {
+            cleanAttrs.list = list;
+        }
         if (link) {
             cleanAttrs.link = OpAttributeSanitizer.sanitizeLinkUsingOptions(link + '', sanitizeOptions);
         }
@@ -96,6 +98,9 @@ var OpAttributeSanitizer = (function () {
     };
     OpAttributeSanitizer.IsValidRel = function (relStr) {
         return !!relStr.match(/^[a-zA-Z\s\-]{1,250}$/i);
+    };
+    OpAttributeSanitizer.IsValidList = function (list) {
+        return !!list.match(/^bullet|(ordered(:[aAiI1])?)$/);
     };
     return OpAttributeSanitizer;
 }());

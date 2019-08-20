@@ -86,6 +86,25 @@ class QuillDeltaToHtmlConverter {
                   : '';
    }
 
+   _getListSubtype(op: DeltaInsertOp): string | null {
+      if (op.isOrderedList() == false) {
+         return null;
+      }
+
+      if (op.attributes == null) {
+         return null;
+      }
+      
+      const listAttributeValue = op.attributes["list"];
+      if (listAttributeValue == null) {
+         return null;
+      }
+
+      const listTypes = listAttributeValue.split(":");
+
+      return listTypes.length == 2 ? listTypes[1] : null;
+   }   
+
    getGroupedOps(): TDataGroup[] {
       var deltaOps = InsertOpsConverter.convert(this.rawDeltaOps, this.options);
 
@@ -156,9 +175,13 @@ class QuillDeltaToHtmlConverter {
    _renderList(list: ListGroup): string {
 
       var firstItem = list.items[0];
-      return makeStartTag(this._getListTag(firstItem.item.op))
+      const tag = this._getListTag(firstItem.item.op)
+      const type = this._getListSubtype(firstItem.item.op)
+      
+      const attributes = type != undefined ? [{ key: 'type', value: type }] : []
+      return makeStartTag(tag, attributes)
          + list.items.map((li: ListItem) => this._renderListItem(li)).join('')
-         + makeEndTag(this._getListTag(firstItem.item.op));
+         + makeEndTag(tag);
    }
 
    _renderListItem(li: ListItem): string {

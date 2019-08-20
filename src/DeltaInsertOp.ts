@@ -76,11 +76,11 @@ class DeltaInsertOp {
    }
 
    isOrderedList() {
-      return this.attributes.list === ListType.Ordered;
+      return this.attributes.list != null && this.attributes.list.includes(ListType.Ordered);
    }
 
    isBulletList() {
-      return this.attributes.list === ListType.Bullet;
+      return this.attributes.list != null && this.attributes.list.includes(ListType.Bullet);
    }
 
    isCheckedList() {

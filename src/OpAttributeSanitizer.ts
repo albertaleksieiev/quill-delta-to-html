@@ -86,15 +86,17 @@ class OpAttributeSanitizer {
        cleanAttrs.width = width;
        cleanAttrs.target = target;
        cleanAttrs.rel = rel;
-       cleanAttrs.list = list;
        cleanAttrs.align = align;
        cleanAttrs.direction = direction;
        cleanAttrs.indent = indent;
 
+       if (list && OpAttributeSanitizer.IsValidList(list)) {
+           cleanAttrs.list = list;
+       }
+
        if (link) {
            cleanAttrs.link = OpAttributeSanitizer.sanitizeLinkUsingOptions(link + '', sanitizeOptions);
        }
-
 
        if (script === ScriptType.Sub || ScriptType.Super === script) {
            cleanAttrs.script = script;
@@ -160,6 +162,9 @@ class OpAttributeSanitizer {
 
    static IsValidRel(relStr: string) {
       return !!relStr.match(/^[a-zA-Z\s\-]{1,250}$/i);
+   }
+   static IsValidList(list: string) {
+      return !!list.match(/^bullet|(ordered(:[aAiI1])?)$/);
    }
 }
 
