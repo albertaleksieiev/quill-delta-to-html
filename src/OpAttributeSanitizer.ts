@@ -42,8 +42,7 @@ interface IUrlSanitizerFn {
    (url: string): string | undefined
 }
 interface IOpAttributeSanitizerOptions {
-   urlSanitizer?: IUrlSanitizerFn,
-   disableAttributeSanitize?: boolean
+   urlSanitizer?: IUrlSanitizerFn
 }
 
 class OpAttributeSanitizer {
@@ -51,9 +50,8 @@ class OpAttributeSanitizer {
    static sanitize(dirtyAttrs: IOpAttributes, sanitizeOptions: IOpAttributeSanitizerOptions): IOpAttributes {
 
       var cleanAttrs: any = {};
-      var disableSanitize = sanitizeOptions.disableAttributeSanitize || false;
 
-       if (!dirtyAttrs || typeof dirtyAttrs !== 'object') {
+      if (!dirtyAttrs || typeof dirtyAttrs !== 'object') {
          return cleanAttrs;
       }
       let booleanAttrs = [
@@ -67,11 +65,6 @@ class OpAttributeSanitizer {
          direction, indent, mentions, mention, width, target, rel
       } = dirtyAttrs;
 
-      let sanitizedAttrs = [...booleanAttrs, ...colorAttrs,
-         'font', 'size', 'link', 'script', 'list', 'header', 'align',
-         'direction', 'indent', 'mentions', 'mention', 'width',
-         'target', 'rel'
-      ];
       booleanAttrs.forEach(function (prop: string) {
          var v = (<any>dirtyAttrs)[prop];
          if (v) {
@@ -88,67 +81,44 @@ class OpAttributeSanitizer {
          }
       });
 
-      if (font && (disableSanitize || OpAttributeSanitizer.IsValidFontName(font + ''))) {
-         cleanAttrs.font = font;
-      }
+       cleanAttrs.font = font;
+       cleanAttrs.size = size;
+       cleanAttrs.width = width;
+       cleanAttrs.target = target;
+       cleanAttrs.rel = rel;
+       cleanAttrs.align = align;
+       cleanAttrs.direction = direction;
+       cleanAttrs.indent = indent;
 
-      if (size && (disableSanitize || OpAttributeSanitizer.IsValidSize(size + ''))) {
-         cleanAttrs.size = size;
-      }
+       if (list && OpAttributeSanitizer.IsValidList(list)) {
+           cleanAttrs.list = list;
+       }
 
-      if (width && (disableSanitize || OpAttributeSanitizer.IsValidWidth(width + ''))) {
-         cleanAttrs.width = width;
-      }
+       if (link) {
+           cleanAttrs.link = OpAttributeSanitizer.sanitizeLinkUsingOptions(link + '', sanitizeOptions);
+       }
 
-      if (link) {
-         cleanAttrs.link = OpAttributeSanitizer.sanitizeLinkUsingOptions(link + '', sanitizeOptions);
-      }
-      if (target && (disableSanitize || OpAttributeSanitizer.isValidTarget(target))) {
-         cleanAttrs.target = target;
-      }
+       if (script === ScriptType.Sub || ScriptType.Super === script) {
+           cleanAttrs.script = script;
+       }
 
-      if (rel && (disableSanitize || OpAttributeSanitizer.IsValidRel(rel))) {
-         cleanAttrs.rel = rel;
-      }
 
-      if (script === ScriptType.Sub || ScriptType.Super === script) {
-         cleanAttrs.script = script;
-      }
+       if (Number(header)) {
+           cleanAttrs.header = Math.min(Number(header), 6);
+       }
 
-      if (list && OpAttributeSanitizer.IsValidList(list)) {
-         cleanAttrs.list = list;
-      }
-
-      if (Number(header)) {
-         cleanAttrs.header = Math.min(Number(header), 6);
-      }
-
-      if ([AlignType.Center, AlignType.Right, AlignType.Justify, AlignType.Left].find(a => a === align)) {
-         cleanAttrs.align = align;
-      }
-
-      if (direction === DirectionType.Rtl) {
-         cleanAttrs.direction = direction;
-      }
-
-      if (indent && Number(indent)) {
-         cleanAttrs.indent = Math.min(Number(indent), 30);
-      }
-
-      if (mentions && mention) {
-         let sanitizedMention = MentionSanitizer.sanitize(mention, sanitizeOptions);
-         if (Object.keys(sanitizedMention).length > 0) {
-            cleanAttrs.mentions = !!mentions;
-            cleanAttrs.mention = mention;
-         }
-      }
-      return Object.keys(dirtyAttrs).reduce((cleaned, k) => {
-         // this is a custom attr, put it back
-         if (sanitizedAttrs.indexOf(k) === -1) {
-            cleaned[k] = (<any>dirtyAttrs)[k];
-         };
-         return cleaned;
-      }, cleanAttrs);
+       if (mentions && mention) {
+           let sanitizedMention = MentionSanitizer.sanitize(mention, sanitizeOptions);
+           if (Object.keys(sanitizedMention).length > 0) {
+               cleanAttrs.mentions = !!mentions;
+               cleanAttrs.mention = mention;
+           }
+       }
+       return Object.keys(dirtyAttrs).reduce((cleaned, k) => {
+           // this is a custom attr, put it back
+           cleaned[k] = (<any>dirtyAttrs)[k];
+           return cleaned;
+       }, cleanAttrs);
    }
 
    static sanitizeLinkUsingOptions(link: string, options: IOpAttributeSanitizerOptions) {
@@ -157,8 +127,8 @@ class OpAttributeSanitizer {
          sanitizerFn = options.urlSanitizer;
       }
       let result = sanitizerFn(link);
-      return typeof result === 'string' ? 
-         result : 
+      return typeof result === 'string' ?
+         result :
          encodeLink(url.sanitize(link));
    }
    static IsValidHexColor(colorStr: string) {

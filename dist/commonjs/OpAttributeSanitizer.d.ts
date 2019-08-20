@@ -31,7 +31,6 @@ interface IUrlSanitizerFn {
 }
 interface IOpAttributeSanitizerOptions {
     urlSanitizer?: IUrlSanitizerFn;
-    disableAttributeSanitize?: boolean;
 }
 declare class OpAttributeSanitizer {
     static sanitize(dirtyAttrs: IOpAttributes, sanitizeOptions: IOpAttributeSanitizerOptions): IOpAttributes;
