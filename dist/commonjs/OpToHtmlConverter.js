@@ -54,7 +54,8 @@ var OpToHtmlConverter = (function () {
     };
     OpToHtmlConverter.prototype.getHtmlParts = function () {
         var _this = this;
-        if (this.op.isJustNewline() && !this.op.isContainerBlock()) {
+        var isNewLineNeedStyling = function (op) { return op.attributes.size != null; };
+        if (this.op.isJustNewline() && isNewLineNeedStyling(this.op) == false && !this.op.isContainerBlock()) {
             return { openingTag: '', closingTag: '', content: value_types_1.NewLine };
         }
         var tags = this.getTags(), attrs = this.getTagAttributes();
