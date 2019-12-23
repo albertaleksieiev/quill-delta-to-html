@@ -65,6 +65,10 @@ class OpAttributeSanitizer {
          direction, indent, mentions, mention, width, target, rel
       } = dirtyAttrs;
 
+      let sanitizedAttrs = ['font', 'size', 'link', 'script', 'list', 'header', 'align',
+         'direction', 'indent', 'mentions', 'mention', 'width',
+         'target', 'rel'
+      ];
       booleanAttrs.forEach(function (prop: string) {
          var v = (<any>dirtyAttrs)[prop];
          if (v) {
@@ -81,43 +85,66 @@ class OpAttributeSanitizer {
          }
       });
 
-       cleanAttrs.font = font;
-       cleanAttrs.size = size;
-       cleanAttrs.width = width;
-       cleanAttrs.target = target;
-       cleanAttrs.rel = rel;
-       cleanAttrs.align = align;
-       cleanAttrs.direction = direction;
-       cleanAttrs.indent = indent;
+      if (font) {
+         cleanAttrs.font = font;
+      }
 
-       if (list && OpAttributeSanitizer.IsValidList(list)) {
-           cleanAttrs.list = list;
-       }
+      if (size) {
+         cleanAttrs.size = size;
+      }
 
-       if (link) {
-           cleanAttrs.link = OpAttributeSanitizer.sanitizeLinkUsingOptions(link + '', sanitizeOptions);
-       }
+      if (width) {
+         cleanAttrs.width = width;
+      }
 
-       if (script === ScriptType.Sub || ScriptType.Super === script) {
-           cleanAttrs.script = script;
-       }
+      if (list && OpAttributeSanitizer.IsValidList(list)) {
+         cleanAttrs.list = list;
+      }
 
+      if (link) {
+         cleanAttrs.link = OpAttributeSanitizer.sanitizeLinkUsingOptions(link + '', sanitizeOptions);
+      }
 
-       if (Number(header)) {
-           cleanAttrs.header = Math.min(Number(header), 6);
-       }
+      if (target) {
+         cleanAttrs.target = target;
+      }
 
-       if (mentions && mention) {
-           let sanitizedMention = MentionSanitizer.sanitize(mention, sanitizeOptions);
-           if (Object.keys(sanitizedMention).length > 0) {
-               cleanAttrs.mentions = !!mentions;
-               cleanAttrs.mention = mention;
-           }
-       }
-       return Object.keys(dirtyAttrs).reduce((cleaned, k) => {
-           // this is a custom attr, put it back
-           cleaned[k] = (<any>dirtyAttrs)[k];
-           return cleaned;
+      if (rel) {
+         cleanAttrs.rel = rel;
+      }
+
+      if (script === ScriptType.Sub || ScriptType.Super === script) {
+         cleanAttrs.script = script;
+      }
+
+      if (Number(header)) {
+         cleanAttrs.header = Math.min(Number(header), 6);
+      }
+
+      if (align) {
+         cleanAttrs.align = align;
+      }
+      
+      if (direction) {
+         cleanAttrs.direction = direction;
+      }
+      
+      if (indent) {
+         cleanAttrs.indent = indent;
+      }
+      if (mentions && mention) {
+         let sanitizedMention = MentionSanitizer.sanitize(mention, sanitizeOptions);
+         if (Object.keys(sanitizedMention).length > 0) {
+            cleanAttrs.mentions = !!mentions;
+            cleanAttrs.mention = mention;
+         }
+      }
+      return Object.keys(dirtyAttrs).reduce((cleaned, k) => {
+         // this is non-sanitized attr, put it back
+         if (sanitizedAttrs.indexOf(k) === -1) {
+            cleaned[k] = (<any>dirtyAttrs)[k];
+         };
+         return cleaned;
        }, cleanAttrs);
    }
 

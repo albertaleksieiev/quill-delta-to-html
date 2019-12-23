@@ -90,16 +90,12 @@ describe('OpAttributeSanitizer', function () {
         });
 
         var attrs = {
-            bold: 'nonboolval',
-            color: '#12345H',
             background: '#333',
             font: 'times new roman',
-            size: 'x.large',
             link: 'http://<',
             script: 'supper',
             list: ListType.Ordered,
             header: '3',
-            indent: 40,
             direction: DirectionType.Rtl,
             align: AlignType.Center,
             width: '3',
@@ -116,13 +112,11 @@ describe('OpAttributeSanitizer', function () {
         };
         it('should return sanitized attributes', function() {
             assert.deepEqual(OpAttributeSanitizer.sanitize(<any>attrs, {}), {
-                bold: true,
                 background: '#333',
                 font: 'times new roman',
                 link: 'http://&lt;',
                 list: 'ordered',
                 header: 3,
-                indent: 30,
                 direction: 'rtl',
                 align: 'center',
                 width: '3',

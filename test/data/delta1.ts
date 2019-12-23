@@ -19,7 +19,7 @@ var delta1 = {
         { "insert": "list" },
         { "insert": "\n", "attributes": { "list": "bullet" } },
         { "insert": "list" },
-        { "insert": "\n", "attributes": { "list": "checked" } },
+        { "insert": "\n", "attributes": { "list": "bullet" } },
         {"insert": "some code", "attributes":{code:true, bold:true}},
         {"attributes":{"italic":true,"link":"#top","code":true},"insert":"Top"},
         {"insert":"\n"},
@@ -34,8 +34,8 @@ var delta1 = {
         '<sub>the</sub>', ' ', '<sup>rendering</sup>', ' of ',
         '<a href="http://yahoo" target="_blank">inline</a>', ' ', '<span class="noz-formula">x=data</span>',
         ' formats.</p>',
-        '<ul><li>list</li></ul>',
-        '<ul><li data-checked="true">list</li></ul>',
+        '<ul><li>list</li>',
+        '<li>list</li></ul>',
         '<p><strong><code>some code</code></strong>',
         '<a href="#top" target="_blank"><em><code>Top</code></em></a></p>'
     ].join('')

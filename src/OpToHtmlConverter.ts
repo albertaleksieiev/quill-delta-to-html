@@ -89,7 +89,9 @@ class OpToHtmlConverter {
 
    getHtmlParts(): IHtmlParts {
 
-      if (this.op.isJustNewline() && !this.op.isContainerBlock()) {
+      const isNewLineNeedStyling = (op: DeltaInsertOp) => op.attributes.size != null
+
+      if (this.op.isJustNewline() && isNewLineNeedStyling(this.op) == false && !this.op.isContainerBlock()) {
          return { openingTag: '', closingTag: '', content: NewLine };
       }
 

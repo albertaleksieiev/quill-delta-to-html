@@ -367,6 +367,10 @@ describe('OpToHtmlConverter', function () {
                 c1 = new OpToHtmlConverter(op, {encodeHtml: false});
                 assert.equal(c1.getHtml(), '\n');
 
+                var op = new DeltaInsertOp("\n", { size: "48px" });
+                c1 = new OpToHtmlConverter(op, {inlineStyles: {size: (value) => {return `font-size: ${value}`}}});
+                assert.equal(c1.getHtml(), '<span style="font-size: 48px">\n</span>');
+
                 var op = new DeltaInsertOp("\n", { color: '#fff' });
                 c1 = new OpToHtmlConverter(op);
                 assert.equal(c1.getHtml(), '\n');
