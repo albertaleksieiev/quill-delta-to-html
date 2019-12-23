@@ -18,6 +18,10 @@ var OpAttributeSanitizer = (function () {
         ];
         var colorAttrs = ['background', 'color'];
         var font = dirtyAttrs.font, size = dirtyAttrs.size, link = dirtyAttrs.link, script = dirtyAttrs.script, list = dirtyAttrs.list, header = dirtyAttrs.header, align = dirtyAttrs.align, direction = dirtyAttrs.direction, indent = dirtyAttrs.indent, mentions = dirtyAttrs.mentions, mention = dirtyAttrs.mention, width = dirtyAttrs.width, target = dirtyAttrs.target, rel = dirtyAttrs.rel;
+        var sanitizedAttrs = ['font', 'size', 'link', 'script', 'list', 'header', 'align',
+            'direction', 'indent', 'mentions', 'mention', 'width',
+            'target', 'rel'
+        ];
         booleanAttrs.forEach(function (prop) {
             var v = dirtyAttrs[prop];
             if (v) {
@@ -32,25 +36,41 @@ var OpAttributeSanitizer = (function () {
                 cleanAttrs[prop] = val;
             }
         });
-        cleanAttrs.font = font;
-        cleanAttrs.size = size;
-        cleanAttrs.width = width;
-        cleanAttrs.target = target;
-        cleanAttrs.rel = rel;
-        cleanAttrs.align = align;
-        cleanAttrs.direction = direction;
-        cleanAttrs.indent = indent;
+        if (font) {
+            cleanAttrs.font = font;
+        }
+        if (size) {
+            cleanAttrs.size = size;
+        }
+        if (width) {
+            cleanAttrs.width = width;
+        }
         if (list && OpAttributeSanitizer.IsValidList(list)) {
             cleanAttrs.list = list;
         }
         if (link) {
             cleanAttrs.link = OpAttributeSanitizer.sanitizeLinkUsingOptions(link + '', sanitizeOptions);
         }
+        if (target) {
+            cleanAttrs.target = target;
+        }
+        if (rel) {
+            cleanAttrs.rel = rel;
+        }
         if (script === value_types_1.ScriptType.Sub || value_types_1.ScriptType.Super === script) {
             cleanAttrs.script = script;
         }
         if (Number(header)) {
             cleanAttrs.header = Math.min(Number(header), 6);
+        }
+        if (align) {
+            cleanAttrs.align = align;
+        }
+        if (direction) {
+            cleanAttrs.direction = direction;
+        }
+        if (indent) {
+            cleanAttrs.indent = indent;
         }
         if (mentions && mention) {
             var sanitizedMention = MentionSanitizer_1.MentionSanitizer.sanitize(mention, sanitizeOptions);
@@ -60,7 +80,10 @@ var OpAttributeSanitizer = (function () {
             }
         }
         return Object.keys(dirtyAttrs).reduce(function (cleaned, k) {
-            cleaned[k] = dirtyAttrs[k];
+            if (sanitizedAttrs.indexOf(k) === -1) {
+                cleaned[k] = dirtyAttrs[k];
+            }
+            ;
             return cleaned;
         }, cleanAttrs);
     };
