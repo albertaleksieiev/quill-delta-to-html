@@ -6,5 +6,6 @@ declare function makeStartTag(tag: any, attrs?: ITagKeyValue | ITagKeyValue[] | 
 declare function makeEndTag(tag?: any): string;
 declare function decodeHtml(str: string): string;
 declare function encodeHtml(str: string, preventDoubleEncoding?: boolean): string;
+declare function encodeWhitespaces(str: string): string;
 declare function encodeLink(str: string): string;
-export { makeStartTag, makeEndTag, encodeHtml, decodeHtml, encodeLink, ITagKeyValue };
+export { makeStartTag, makeEndTag, encodeWhitespaces, encodeHtml, decodeHtml, encodeLink, ITagKeyValue };

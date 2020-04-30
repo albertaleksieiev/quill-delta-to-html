@@ -68,6 +68,14 @@ describe('QuillDeltaToHtmlConverter', function () {
          assert.equal(html.indexOf('<pre>this is code') > -1, true, html);
       });
 
+      it('should render html with whitespaces', function () {
+         let options = {encodeWhitespaces: true};
+         var qdc = new QuillDeltaToHtmlConverter([{insert: "Text with some   spaces"},{insert: "\n"}, {insert: " one more "}], options);
+
+         var html = qdc.convert();
+         assert.equal(html, '<p>Text with some&nbsp;&nbsp;&nbsp;spaces<br/>&nbsp;one more&nbsp;</p>', html);
+      });
+
       it('should render mention', function () {
          let ops = [
             {

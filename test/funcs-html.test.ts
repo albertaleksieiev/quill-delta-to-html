@@ -5,6 +5,7 @@ import * as assert from 'assert';
 import {
     makeEndTag, 
     makeStartTag,
+    encodeWhitespaces,
     encodeHtml,
     decodeHtml,
     encodeLink
@@ -58,6 +59,23 @@ describe('html module', function () {
 
             var act = encodeHtml('hello"my<lovely\'/>&amp;friend&here()');
             assert.equal(act, 'hello&quot;my&lt;lovely&#x27;&#x2F;&gt;&amp;friend&amp;here()');
+        });
+    });
+
+    describe('encodeWhitespaces()', function () {
+        it('should encode whitespace character', function() {
+
+            var act = encodeWhitespaces(' ');
+            assert.equal(act, '&nbsp;');
+
+            var act = encodeWhitespaces('a b');
+            assert.equal(act, 'a b');
+
+            var act = encodeWhitespaces('123   456');
+            assert.equal(act, '123&nbsp;&nbsp;&nbsp;456');
+
+            var act = encodeWhitespaces('  123   456  ');
+            assert.equal(act, '&nbsp;&nbsp;123&nbsp;&nbsp;&nbsp;456&nbsp;&nbsp;');
         });
     });
 

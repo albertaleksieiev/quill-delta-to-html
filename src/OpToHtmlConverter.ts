@@ -1,4 +1,4 @@
-import { makeStartTag, makeEndTag, encodeHtml, ITagKeyValue } from './funcs-html';
+import { makeStartTag, makeEndTag, encodeHtml, encodeWhitespaces, ITagKeyValue } from './funcs-html';
 import { DeltaInsertOp } from './DeltaInsertOp';
 import { ScriptType, NewLine } from './value-types';
 import * as obj from './helpers/object';
@@ -46,6 +46,7 @@ interface IOpToHtmlConverterOptions {
    classPrefix?: string,
    inlineStyles?: boolean | IInlineStyles,
    encodeHtml?: boolean,
+   encodeWhitespaces?: boolean,
    listItemTag?: string,
    paragraphTag?: string,
    linkRel?: string,
@@ -70,6 +71,7 @@ class OpToHtmlConverter {
          classPrefix: 'ql',
          inlineStyles: undefined,
          encodeHtml: true,
+         encodeWhitespaces: false,
          listItemTag: 'li',
          paragraphTag: 'p'
       }, options);
@@ -136,7 +138,15 @@ class OpToHtmlConverter {
 
       var content = this.op.isFormula() || this.op.isText() ? this.op.insert.value : '';
 
-      return this.options.encodeHtml && encodeHtml(content) || content;
+      if (this.options.encodeHtml) {
+         content = encodeHtml(content)
+      }
+
+      if (this.options.encodeWhitespaces) {
+         content = encodeWhitespaces(content)
+      }
+
+      return content;
    }
 
    getCssClasses(): string[] {

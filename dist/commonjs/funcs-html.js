@@ -41,6 +41,16 @@ function encodeHtml(str, preventDoubleEncoding) {
     return encodeMappings(EncodeTarget.Html).reduce(encodeMapping, str);
 }
 exports.encodeHtml = encodeHtml;
+function encodeWhitespaces(str) {
+    var replacer = function (match) {
+        return '&nbsp;'.repeat(match.length);
+    };
+    str = str.replace(/\s\s+/g, replacer);
+    str = str.replace(/^\s+/g, replacer);
+    str = str.replace(/\s+$/g, replacer);
+    return str;
+}
+exports.encodeWhitespaces = encodeWhitespaces;
 function encodeLink(str) {
     var linkMaps = encodeMappings(EncodeTarget.Url);
     var decoded = linkMaps.reduce(decodeMapping, str);
