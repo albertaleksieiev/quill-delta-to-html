@@ -41,6 +41,7 @@ class QuillDeltaToHtmlConverter {
       this.options = obj.assign({
          paragraphTag: 'p',
          encodeHtml: true,
+         encodeWhitespaces: false,
          classPrefix: 'ql',
          inlineStyles: false,
          multiLineBlockquote: true,
@@ -66,6 +67,7 @@ class QuillDeltaToHtmlConverter {
 
       this.converterOptions = {
          encodeHtml: this.options.encodeHtml,
+         encodeWhitespaces: this.options.encodeWhitespaces,
          classPrefix: this.options.classPrefix,
          inlineStyles: inlineStyles,
          listItemTag: this.options.listItemTag,

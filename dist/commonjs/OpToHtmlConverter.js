@@ -38,6 +38,7 @@ var OpToHtmlConverter = (function () {
             classPrefix: 'ql',
             inlineStyles: undefined,
             encodeHtml: true,
+            encodeWhitespaces: false,
             listItemTag: 'li',
             paragraphTag: 'p'
         }, options);
@@ -92,7 +93,13 @@ var OpToHtmlConverter = (function () {
             return this.op.insert.value;
         }
         var content = this.op.isFormula() || this.op.isText() ? this.op.insert.value : '';
-        return this.options.encodeHtml && funcs_html_1.encodeHtml(content) || content;
+        if (this.options.encodeHtml) {
+            content = funcs_html_1.encodeHtml(content);
+        }
+        if (this.options.encodeWhitespaces) {
+            content = funcs_html_1.encodeWhitespaces(content);
+        }
+        return content;
     };
     OpToHtmlConverter.prototype.getCssClasses = function () {
         var attrs = this.op.attributes;

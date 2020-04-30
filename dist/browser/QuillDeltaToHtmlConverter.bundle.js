@@ -386,6 +386,7 @@ var OpToHtmlConverter = (function () {
             classPrefix: 'ql',
             inlineStyles: undefined,
             encodeHtml: true,
+            encodeWhitespaces: false,
             listItemTag: 'li',
             paragraphTag: 'p'
         }, options);
@@ -440,7 +441,13 @@ var OpToHtmlConverter = (function () {
             return this.op.insert.value;
         }
         var content = this.op.isFormula() || this.op.isText() ? this.op.insert.value : '';
-        return this.options.encodeHtml && funcs_html_1.encodeHtml(content) || content;
+        if (this.options.encodeHtml) {
+            content = funcs_html_1.encodeHtml(content);
+        }
+        if (this.options.encodeWhitespaces) {
+            content = funcs_html_1.encodeWhitespaces(content);
+        }
+        return content;
     };
     OpToHtmlConverter.prototype.getCssClasses = function () {
         var attrs = this.op.attributes;
@@ -614,6 +621,7 @@ var QuillDeltaToHtmlConverter = (function () {
         this.options = obj.assign({
             paragraphTag: 'p',
             encodeHtml: true,
+            encodeWhitespaces: false,
             classPrefix: 'ql',
             inlineStyles: false,
             multiLineBlockquote: true,
@@ -639,6 +647,7 @@ var QuillDeltaToHtmlConverter = (function () {
         }
         this.converterOptions = {
             encodeHtml: this.options.encodeHtml,
+            encodeWhitespaces: this.options.encodeWhitespaces,
             classPrefix: this.options.classPrefix,
             inlineStyles: inlineStyles,
             listItemTag: this.options.listItemTag,
@@ -852,6 +861,16 @@ function encodeHtml(str, preventDoubleEncoding) {
     return encodeMappings(EncodeTarget.Html).reduce(encodeMapping, str);
 }
 exports.encodeHtml = encodeHtml;
+function encodeWhitespaces(str) {
+    var replacer = function (match) {
+        return '&nbsp;'.repeat(match.length);
+    };
+    str = str.replace(/\s\s+/g, replacer);
+    str = str.replace(/^\s+/g, replacer);
+    str = str.replace(/\s+$/g, replacer);
+    return str;
+}
+exports.encodeWhitespaces = encodeWhitespaces;
 function encodeLink(str) {
     var linkMaps = encodeMappings(EncodeTarget.Url);
     var decoded = linkMaps.reduce(decodeMapping, str);

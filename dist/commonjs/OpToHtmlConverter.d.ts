@@ -15,6 +15,7 @@ interface IOpToHtmlConverterOptions {
     classPrefix?: string;
     inlineStyles?: boolean | IInlineStyles;
     encodeHtml?: boolean;
+    encodeWhitespaces?: boolean;
     listItemTag?: string;
     paragraphTag?: string;
     linkRel?: string;
