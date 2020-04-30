@@ -47,9 +47,9 @@ function encodeWhitespaces(str: string) {
     let replacer = function(match: string) {
         return '&nbsp;'.repeat(match.length);
     }
-    str = str.replace(/\s\s+/g, replacer);
-    str = str.replace(/^\s+/g, replacer);
-    str = str.replace(/\s+$/g, replacer);
+    str = str.replace(/[\u00a0 ][\u00a0 ]+/g, replacer);
+    str = str.replace(/^[\u00a0 ]+/g, replacer);
+    str = str.replace(/[\u00a0 ]+$/g, replacer);
     return str;
 }
 

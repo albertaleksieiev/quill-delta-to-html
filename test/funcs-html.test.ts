@@ -65,6 +65,9 @@ describe('html module', function () {
     describe('encodeWhitespaces()', function () {
         it('should encode whitespace character', function() {
 
+            var act = encodeWhitespaces('\n');
+            assert.equal(act, '\n');
+
             var act = encodeWhitespaces(' ');
             assert.equal(act, '&nbsp;');
 
