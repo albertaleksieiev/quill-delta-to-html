@@ -71,14 +71,23 @@ describe('html module', function () {
             var act = encodeWhitespaces(' ');
             assert.equal(act, '&nbsp;');
 
+            var act = encodeWhitespaces('  ');
+            assert.equal(act, '&nbsp;&nbsp;');
+
             var act = encodeWhitespaces('a b');
             assert.equal(act, 'a b');
 
+            var act = encodeWhitespaces('a'+' '.repeat(5)+'b');
+            assert.equal(act, 'a&nbsp; &nbsp; &nbsp;b');
+
+            var act = encodeWhitespaces('a'+' '.repeat(6)+'b');
+            assert.equal(act, 'a&nbsp;&nbsp; &nbsp; &nbsp;b');
+
             var act = encodeWhitespaces('123   456');
-            assert.equal(act, '123&nbsp;&nbsp;&nbsp;456');
+            assert.equal(act, '123&nbsp; &nbsp;456');
 
             var act = encodeWhitespaces('  123   456  ');
-            assert.equal(act, '&nbsp;&nbsp;123&nbsp;&nbsp;&nbsp;456&nbsp;&nbsp;');
+            assert.equal(act, '&nbsp;&nbsp;123&nbsp; &nbsp;456&nbsp;&nbsp;');
         });
     });
 

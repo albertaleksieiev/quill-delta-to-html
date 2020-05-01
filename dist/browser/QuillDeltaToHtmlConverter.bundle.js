@@ -863,7 +863,16 @@ function encodeHtml(str, preventDoubleEncoding) {
 exports.encodeHtml = encodeHtml;
 function encodeWhitespaces(str) {
     var replacer = function (match) {
-        return '&nbsp;'.repeat(match.length);
+        var length = match.length;
+        if (length <= 2) {
+            return '&nbsp;'.repeat(length);
+        }
+        else if (length % 2 == 0) {
+            return '&nbsp;' + '&nbsp; '.repeat((length - 2) / 2) + '&nbsp;';
+        }
+        else {
+            return '&nbsp; ' + '&nbsp; '.repeat((length - 2) / 2) + '&nbsp;';
+        }
     };
     str = str.replace(/[\u00a0 ][\u00a0 ]+/g, replacer);
     str = str.replace(/^[\u00a0 ]+/g, replacer);
