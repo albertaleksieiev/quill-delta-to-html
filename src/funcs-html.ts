@@ -45,7 +45,14 @@ function encodeHtml(str: string, preventDoubleEncoding = true) {
 
 function encodeWhitespaces(str: string) {
     let replacer = function(match: string) {
-        return '&nbsp;'.repeat(match.length);
+        const length = match.length;
+        if (length <= 2) {
+            return '&nbsp;'.repeat(length);
+        } else if (length % 2 == 0) {
+            return '&nbsp;' + '&nbsp; '.repeat((length - 2)/ 2) + '&nbsp;';
+        } else {
+            return '&nbsp; ' + '&nbsp; '.repeat((length - 2)/ 2) + '&nbsp;';
+        }
     }
     str = str.replace(/[\u00a0 ][\u00a0 ]+/g, replacer);
     str = str.replace(/^[\u00a0 ]+/g, replacer);

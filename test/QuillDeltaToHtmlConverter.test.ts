@@ -73,7 +73,7 @@ describe('QuillDeltaToHtmlConverter', function () {
          var qdc = new QuillDeltaToHtmlConverter([{insert: "Text with some   spaces"},{insert: "\n"}, {insert: " one more "}], options);
 
          var html = qdc.convert();
-         assert.equal(html, '<p>Text with some&nbsp;&nbsp;&nbsp;spaces<br/>&nbsp;one more&nbsp;</p>', html);
+         assert.equal(html, '<p>Text with some&nbsp; &nbsp;spaces<br/>&nbsp;one more&nbsp;</p>', html);
       });
 
       it('should render mention', function () {
