@@ -76,6 +76,13 @@ describe('QuillDeltaToHtmlConverter', function () {
          assert.equal(html, '<p>Text with some&nbsp; &nbsp;spaces<br/>&nbsp;one more&nbsp;</p>', html);
       });
 
+      it('should render html with tabs', function () {
+         var qdc = new QuillDeltaToHtmlConverter([{insert: "Text with\t some\t\t\tspaces"},{insert: "\n"}, {insert: "\tone more "}]);
+
+         var html = qdc.convert();
+         assert.equal(html, '<p><span style="white-space:pre">Text with\t some\t\t\tspaces</span><br/><span style="white-space:pre">\tone more </span></p>', html);
+      });
+
       it('should render mention', function () {
          let ops = [
             {

@@ -79,9 +79,13 @@ var OpToHtmlConverter = (function () {
             attrs = [];
         }
         endTags.reverse();
+        var content = this.getContent();
+        if (content.includes('\t')) {
+            content = "<span style=\"white-space:pre\">" + content + "</span>";
+        }
         return {
             openingTag: beginTags.join(''),
-            content: this.getContent(),
+            content: content,
             closingTag: endTags.join('')
         };
     };
