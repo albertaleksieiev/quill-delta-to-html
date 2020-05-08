@@ -600,6 +600,17 @@ describe('QuillDeltaToHtmlConverter', function () {
             assert.ok(v.indexOf('<my custom') > - 1);
          });
 
+         it('should render img with `width`, `height`, `alt` tags', function () {
+            var qdc = new QuillDeltaToHtmlConverter([
+               {
+                  insert: {image: 'https://www.w3schools.com/tags/smiley.gif'},
+                  attributes: {"alt":"2323","height":"33","width":"50"}
+               }
+            ]);
+            var html = qdc.convert();
+            assert.equal(html, '<p><img class="ql-image" width="50" height="33" alt="2323" src="https://www.w3schools.com/tags/smiley.gif"/></p>')
+         })
+
          it('should register and use callbacks if they are functions', function () {
             var c = new QuillDeltaToHtmlConverter([
                { insert: { video: "http" } }, { insert: 'aa' }]);

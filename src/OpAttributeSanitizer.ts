@@ -11,6 +11,8 @@ interface IOpAttributes {
    font?: string | undefined,
    size?: string | undefined,
    width?: string | undefined,
+   height?: string | undefined,
+   alt?: string | undefined,
 
    link?: string | undefined,
    bold?: boolean | undefined,
@@ -62,11 +64,11 @@ class OpAttributeSanitizer {
       let colorAttrs = ['background', 'color'];
 
       let { font, size, link, script, list, header, align,
-         direction, indent, mentions, mention, width, target, rel
+         direction, indent, mentions, mention, width, height, alt, target, rel
       } = dirtyAttrs;
 
       let sanitizedAttrs = ['font', 'size', 'link', 'script', 'list', 'header', 'align',
-         'direction', 'indent', 'mentions', 'mention', 'width',
+         'direction', 'indent', 'mentions', 'mention', 'width', 'height', 'alt',
          'target', 'rel'
       ];
       booleanAttrs.forEach(function (prop: string) {
@@ -95,6 +97,14 @@ class OpAttributeSanitizer {
 
       if (width) {
          cleanAttrs.width = width;
+      }
+
+      if (height) {
+         cleanAttrs.height = height;
+      }
+
+      if (alt) {
+         cleanAttrs.alt = alt;
       }
 
       if (list && OpAttributeSanitizer.IsValidList(list)) {
