@@ -232,10 +232,13 @@ class OpToHtmlConverter {
 
       if (this.op.isImage()) {
          this.op.attributes.width && (tagAttrs = tagAttrs.concat(makeAttr('width', this.op.attributes.width)));
-         if (!this.op.attributes.width) {
+         this.op.attributes.height && (tagAttrs = tagAttrs.concat(makeAttr('height', this.op.attributes.height)));
+         this.op.attributes.alt && (tagAttrs = tagAttrs.concat(makeAttr('alt', this.op.attributes.alt)));
+         if (!this.op.attributes.width && !this.op.attributes.height) {
             let styles = ['max-width:100%', 'height:auto']
             tagAttrs.push(makeAttr('style', styles.join(';')));
          }
+
          return tagAttrs.concat(makeAttr('src', this.op.insert.value));
       }
 

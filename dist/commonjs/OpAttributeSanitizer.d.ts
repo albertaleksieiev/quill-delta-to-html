@@ -6,6 +6,8 @@ interface IOpAttributes {
     font?: string | undefined;
     size?: string | undefined;
     width?: string | undefined;
+    height?: string | undefined;
+    alt?: string | undefined;
     link?: string | undefined;
     bold?: boolean | undefined;
     italic?: boolean | undefined;

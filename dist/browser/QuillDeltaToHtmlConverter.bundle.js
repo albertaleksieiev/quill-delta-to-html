@@ -233,9 +233,9 @@ var OpAttributeSanitizer = (function () {
             'blockquote', 'code-block', 'renderAsBlock'
         ];
         var colorAttrs = ['background', 'color'];
-        var font = dirtyAttrs.font, size = dirtyAttrs.size, link = dirtyAttrs.link, script = dirtyAttrs.script, list = dirtyAttrs.list, header = dirtyAttrs.header, align = dirtyAttrs.align, direction = dirtyAttrs.direction, indent = dirtyAttrs.indent, mentions = dirtyAttrs.mentions, mention = dirtyAttrs.mention, width = dirtyAttrs.width, target = dirtyAttrs.target, rel = dirtyAttrs.rel;
+        var font = dirtyAttrs.font, size = dirtyAttrs.size, link = dirtyAttrs.link, script = dirtyAttrs.script, list = dirtyAttrs.list, header = dirtyAttrs.header, align = dirtyAttrs.align, direction = dirtyAttrs.direction, indent = dirtyAttrs.indent, mentions = dirtyAttrs.mentions, mention = dirtyAttrs.mention, width = dirtyAttrs.width, height = dirtyAttrs.height, alt = dirtyAttrs.alt, target = dirtyAttrs.target, rel = dirtyAttrs.rel;
         var sanitizedAttrs = ['font', 'size', 'link', 'script', 'list', 'header', 'align',
-            'direction', 'indent', 'mentions', 'mention', 'width',
+            'direction', 'indent', 'mentions', 'mention', 'width', 'height', 'alt',
             'target', 'rel'
         ];
         booleanAttrs.forEach(function (prop) {
@@ -260,6 +260,12 @@ var OpAttributeSanitizer = (function () {
         }
         if (width) {
             cleanAttrs.width = width;
+        }
+        if (height) {
+            cleanAttrs.height = height;
+        }
+        if (alt) {
+            cleanAttrs.alt = alt;
         }
         if (list && OpAttributeSanitizer.IsValidList(list)) {
             cleanAttrs.list = list;
@@ -517,10 +523,8 @@ var OpToHtmlConverter = (function () {
         var tagAttrs = classes.length ? [makeAttr('class', classes.join(' '))] : [];
         if (this.op.isImage()) {
             this.op.attributes.width && (tagAttrs = tagAttrs.concat(makeAttr('width', this.op.attributes.width)));
-            if (!this.op.attributes.width) {
-                var styles_1 = ['max-width: 100%', 'height: auto'];
-                tagAttrs.push(makeAttr('style', styles_1.join(';')));
-            }
+            this.op.attributes.height && (tagAttrs = tagAttrs.concat(makeAttr('height', this.op.attributes.height)));
+            this.op.attributes.alt && (tagAttrs = tagAttrs.concat(makeAttr('alt', this.op.attributes.alt)));
             return tagAttrs.concat(makeAttr('src', this.op.insert.value));
         }
         if (this.op.isACheckList()) {
