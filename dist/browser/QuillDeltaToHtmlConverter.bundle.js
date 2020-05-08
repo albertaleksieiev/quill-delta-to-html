@@ -517,6 +517,10 @@ var OpToHtmlConverter = (function () {
         var tagAttrs = classes.length ? [makeAttr('class', classes.join(' '))] : [];
         if (this.op.isImage()) {
             this.op.attributes.width && (tagAttrs = tagAttrs.concat(makeAttr('width', this.op.attributes.width)));
+            if (!this.op.attributes.width) {
+                var styles_1 = ['max-width: 100%', 'height: auto'];
+                tagAttrs.push(makeAttr('style', styles_1.join(';')));
+            }
             return tagAttrs.concat(makeAttr('src', this.op.insert.value));
         }
         if (this.op.isACheckList()) {

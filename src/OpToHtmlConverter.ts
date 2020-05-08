@@ -232,6 +232,10 @@ class OpToHtmlConverter {
 
       if (this.op.isImage()) {
          this.op.attributes.width && (tagAttrs = tagAttrs.concat(makeAttr('width', this.op.attributes.width)));
+         if (!this.op.attributes.width) {
+            let styles = ['max-width:100%', 'height:auto']
+            tagAttrs.push(makeAttr('style', styles.join(';')));
+         }
          return tagAttrs.concat(makeAttr('src', this.op.insert.value));
       }
 

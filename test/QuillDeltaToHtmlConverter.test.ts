@@ -148,9 +148,9 @@ describe('QuillDeltaToHtmlConverter', function () {
          let html = qdc.convert();
          assert.equal(html, [
             '<p>',
-            '<img class="ql-image" src="http://yahoo.com/abc.jpg"/>',
+            '<img class="ql-image" style="max-width:100%;height:auto" src="http://yahoo.com/abc.jpg"/>',
             '<a href="http://aha" target="_blank">',
-               '<img class="ql-image" src="http://yahoo.com/def.jpg"/>',
+               '<img class="ql-image" style="max-width:100%;height:auto" src="http://yahoo.com/def.jpg"/>',
             '</a>',
             '</p>'
          ].join(''))
