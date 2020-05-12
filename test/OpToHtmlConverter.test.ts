@@ -254,6 +254,7 @@ describe('OpToHtmlConverter', function () {
             var c = new OpToHtmlConverter(o);
             assert.deepEqual(c.getTagAttributes(), [
                 { key: 'class', value: "ql-image" },
+                { key: 'style', value: "max-width:100%;height:auto" },
                 { key: 'src', value: "http:" }
             ]);
 
@@ -377,7 +378,7 @@ describe('OpToHtmlConverter', function () {
 
                 var op = new DeltaInsertOp(new InsertDataQuill(DataType.Image, "http://"));
                 c1 = new OpToHtmlConverter(op);
-                assert.equal(c1.getHtml(), '<img class="ql-image" src="http://"/>');
+                assert.equal(c1.getHtml(), '<img class="ql-image" style="max-width:100%;height:auto" src="http://"/>');
             });
         });
 

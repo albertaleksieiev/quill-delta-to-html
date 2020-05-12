@@ -525,6 +525,10 @@ var OpToHtmlConverter = (function () {
             this.op.attributes.width && (tagAttrs = tagAttrs.concat(makeAttr('width', this.op.attributes.width)));
             this.op.attributes.height && (tagAttrs = tagAttrs.concat(makeAttr('height', this.op.attributes.height)));
             this.op.attributes.alt && (tagAttrs = tagAttrs.concat(makeAttr('alt', this.op.attributes.alt)));
+            if (!this.op.attributes.width && !this.op.attributes.height) {
+                var styles_1 = ['max-width:100%', 'height:auto'];
+                tagAttrs.push(makeAttr('style', styles_1.join(';')));
+            }
             return tagAttrs.concat(makeAttr('src', this.op.insert.value));
         }
         if (this.op.isACheckList()) {
