@@ -525,6 +525,7 @@ var OpToHtmlConverter = (function () {
             this.op.attributes.width && (tagAttrs = tagAttrs.concat(makeAttr('width', this.op.attributes.width)));
             this.op.attributes.height && (tagAttrs = tagAttrs.concat(makeAttr('height', this.op.attributes.height)));
             this.op.attributes.alt && (tagAttrs = tagAttrs.concat(makeAttr('alt', this.op.attributes.alt)));
+            this.op.attributes['data-cid'] && (tagAttrs = tagAttrs.concat(makeAttr('data-cid', this.op.attributes['data-cid'])));
             if (!this.op.attributes.width && !this.op.attributes.height) {
                 var styles_1 = ['max-width:100%', 'height:auto'];
                 tagAttrs.push(makeAttr('style', styles_1.join(';')));

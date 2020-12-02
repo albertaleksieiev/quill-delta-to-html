@@ -379,6 +379,10 @@ describe('OpToHtmlConverter', function () {
                 var op = new DeltaInsertOp(new InsertDataQuill(DataType.Image, "http://"));
                 c1 = new OpToHtmlConverter(op);
                 assert.equal(c1.getHtml(), '<img class="ql-image" style="max-width:100%;height:auto" src="http://"/>');
+
+                var op = new DeltaInsertOp(new InsertDataQuill(DataType.Image, "http://"), {"data-cid": "123-456"});
+                c1 = new OpToHtmlConverter(op);
+                assert.equal(c1.getHtml(), '<img class="ql-image" data-cid="123-456" style="max-width:100%;height:auto" src="http://"/>');
             });
         });
 
