@@ -8,6 +8,7 @@ interface IOpAttributes {
     width?: string | undefined;
     height?: string | undefined;
     alt?: string | undefined;
+    'data-cid'?: string | undefined;
     link?: string | undefined;
     bold?: boolean | undefined;
     italic?: boolean | undefined;
