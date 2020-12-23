@@ -102,7 +102,7 @@ var DeltaInsertOp = (function () {
 }());
 exports.DeltaInsertOp = DeltaInsertOp;
 
-},{"./InsertData":2,"./value-types":17}],2:[function(require,module,exports){
+},{"./InsertData":2,"./value-types":16}],2:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var InsertDataQuill = (function () {
@@ -158,7 +158,7 @@ var InsertOpDenormalizer = (function () {
 }());
 exports.InsertOpDenormalizer = InsertOpDenormalizer;
 
-},{"./helpers/object":13,"./helpers/string":14,"./value-types":17}],4:[function(require,module,exports){
+},{"./helpers/object":13,"./helpers/string":14,"./value-types":16}],4:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var DeltaInsertOp_1 = require("./DeltaInsertOp");
@@ -213,12 +213,11 @@ var InsertOpsConverter = (function () {
 }());
 exports.InsertOpsConverter = InsertOpsConverter;
 
-},{"./DeltaInsertOp":1,"./InsertData":2,"./InsertOpDenormalizer":3,"./OpAttributeSanitizer":5,"./value-types":17}],5:[function(require,module,exports){
+},{"./DeltaInsertOp":1,"./InsertData":2,"./InsertOpDenormalizer":3,"./OpAttributeSanitizer":5,"./value-types":16}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var value_types_1 = require("./value-types");
 var MentionSanitizer_1 = require("./mentions/MentionSanitizer");
-var url = require("./helpers/url");
 var funcs_html_1 = require("./funcs-html");
 var OpAttributeSanitizer = (function () {
     function OpAttributeSanitizer() {
@@ -317,7 +316,7 @@ var OpAttributeSanitizer = (function () {
         var result = sanitizerFn(link);
         return typeof result === 'string' ?
             result :
-            funcs_html_1.encodeLink(url.sanitize(link));
+            funcs_html_1.encodeLink(link);
     };
     OpAttributeSanitizer.IsValidHexColor = function (colorStr) {
         return !!colorStr.match(/^#([0-9A-F]{6}|[0-9A-F]{3})$/i);
@@ -351,7 +350,7 @@ var OpAttributeSanitizer = (function () {
 }());
 exports.OpAttributeSanitizer = OpAttributeSanitizer;
 
-},{"./funcs-html":8,"./helpers/url":15,"./mentions/MentionSanitizer":16,"./value-types":17}],6:[function(require,module,exports){
+},{"./funcs-html":8,"./mentions/MentionSanitizer":15,"./value-types":16}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var funcs_html_1 = require("./funcs-html");
@@ -619,7 +618,7 @@ var OpToHtmlConverter = (function () {
 }());
 exports.OpToHtmlConverter = OpToHtmlConverter;
 
-},{"./OpAttributeSanitizer":5,"./funcs-html":8,"./helpers/array":12,"./helpers/object":13,"./value-types":17}],7:[function(require,module,exports){
+},{"./OpAttributeSanitizer":5,"./funcs-html":8,"./helpers/array":12,"./helpers/object":13,"./value-types":16}],7:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var InsertOpsConverter_1 = require("./InsertOpsConverter");
@@ -834,7 +833,7 @@ var QuillDeltaToHtmlConverter = (function () {
 }());
 exports.QuillDeltaToHtmlConverter = QuillDeltaToHtmlConverter;
 
-},{"./InsertOpsConverter":4,"./OpToHtmlConverter":6,"./funcs-html":8,"./grouper/Grouper":9,"./grouper/ListNester":10,"./grouper/group-types":11,"./helpers/object":13,"./value-types":17}],8:[function(require,module,exports){
+},{"./InsertOpsConverter":4,"./OpToHtmlConverter":6,"./funcs-html":8,"./grouper/Grouper":9,"./grouper/ListNester":10,"./grouper/group-types":11,"./helpers/object":13,"./value-types":16}],8:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var EncodeTarget;
@@ -1309,20 +1308,6 @@ exports.tokenizeWithNewLines = tokenizeWithNewLines;
 },{}],15:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function sanitize(str) {
-    var val = str;
-    val = val.replace(/^\s*/gm, '');
-    var whiteList = /^((https?|s?ftp|file|cid|blob|mailto|tel):|#|\/|data:image\/)/;
-    if (whiteList.test(val)) {
-        return val;
-    }
-    return 'unsafe:' + val;
-}
-exports.sanitize = sanitize;
-
-},{}],16:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 var OpAttributeSanitizer_1 = require("./../OpAttributeSanitizer");
 var MentionSanitizer = (function () {
     function MentionSanitizer() {
@@ -1365,7 +1350,7 @@ var MentionSanitizer = (function () {
 }());
 exports.MentionSanitizer = MentionSanitizer;
 
-},{"./../OpAttributeSanitizer":5}],17:[function(require,module,exports){
+},{"./../OpAttributeSanitizer":5}],16:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var NewLine = "\n";
