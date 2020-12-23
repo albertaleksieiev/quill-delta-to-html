@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var value_types_1 = require("./value-types");
 var MentionSanitizer_1 = require("./mentions/MentionSanitizer");
-var url = require("./helpers/url");
 var funcs_html_1 = require("./funcs-html");
 var OpAttributeSanitizer = (function () {
     function OpAttributeSanitizer() {
@@ -101,7 +100,7 @@ var OpAttributeSanitizer = (function () {
         var result = sanitizerFn(link);
         return typeof result === 'string' ?
             result :
-            funcs_html_1.encodeLink(url.sanitize(link));
+            funcs_html_1.encodeLink(link);
     };
     OpAttributeSanitizer.IsValidHexColor = function (colorStr) {
         return !!colorStr.match(/^#([0-9A-F]{6}|[0-9A-F]{3})$/i);

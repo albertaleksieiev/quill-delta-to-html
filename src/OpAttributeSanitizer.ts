@@ -1,7 +1,6 @@
 
 import { ListType, AlignType, DirectionType, ScriptType } from './value-types';
 import { MentionSanitizer } from "./mentions/MentionSanitizer";
-import * as url from './helpers/url';
 import {encodeLink} from "./funcs-html";
 import { IMention } from "./mentions/MentionSanitizer";
 
@@ -167,7 +166,7 @@ class OpAttributeSanitizer {
       let result = sanitizerFn(link);
       return typeof result === 'string' ?
          result :
-         encodeLink(url.sanitize(link));
+         encodeLink(link);
    }
    static IsValidHexColor(colorStr: string) {
       return !!colorStr.match(/^#([0-9A-F]{6}|[0-9A-F]{3})$/i);
